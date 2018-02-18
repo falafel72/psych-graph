@@ -6,16 +6,33 @@
 </head>
 <style>
     .links line {
-      stroke: #999;
-      stroke-opacity: 0.6;
+        stroke: #999;
+        stroke-opacity: 0.6;
     }
 
-    .nodes circle {
-      stroke: #fff;
-      stroke-width: 1.5px;
+    .node circle {
+        stroke: #fff;
+        stroke-width: 1.5px;
     }
+
+    .node text {
+        font-size: 12px;
+        font-family: "Avenir";
+    }
+
+    .node text.question {
+        display: block;
+    }
+
+    .node circle:hover + text.study {
+        display: block;
+    }
+
+    .node text.study {
+        display: none;
+    };
 </style>
-<body> 
+<body>
     <svg width="1280" height="800"></svg>
 </body>
 <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -34,46 +51,79 @@
     d3.json("data.json", function(error, graph) {
       if (error) throw error;
 
-      var link = svg.append("g")
-          .attr("class", "links")
-        .selectAll("line")
-        .data(graph.links)
-        .enter().append("line")
-          .attr("stroke-width", 1);
+        var link = svg.append("g")
+                .attr("class", "links")
+            .selectAll("line")
+            .data(graph.links)
+            .enter().append("line")
+                .attr("stroke-width", 1);
 
-      var node = svg.append("g")
-          .attr("class", "nodes")
-        .selectAll("circle")
-        .data(graph.nodes)
-        .enter().append("circle")
-          .attr("r", 5)
-          .attr("fill", function(d) { return color(d.type); })
-          .call(d3.drag()
-              .on("start", dragstarted)
-              .on("drag", dragged)
-              .on("end", dragended));
+        //make a group with the circle and label
+        var nodeGroup = svg.append("g")
+                .attr("class", "nodes")
+            .selectAll("g")
+            .data(graph.nodes)
+            .enter().append("g")
+                .attr("class","node");
+            
+        var node = nodeGroup.append("circle")
+            .attr("r", 7)
+            .attr("fill", function(d) { return color(d.type); })
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
 
-      node.append("title")
-          .text(function(d) { return d.id; });
+        
+        var nodeName = nodeGroup.append("text")
+            .attr("class",function(d) { return (d.type) ? "question" : "study"; })
+            .text(function(d) {return d.id});
 
-      simulation
-          .nodes(graph.nodes)
-          .on("tick", ticked);
+        // originally the node was just a circle
+        //   var node = svg.append("g")
+        //          .attr("class", "nodes")
+        //     .selectAll("circle")
+        //     .data(graph.nodes)
+        //     .enter().append("circle")
+        //         .attr("r", 5)
+        //         .attr("fill", function(d) { return color(d.type); })
+        //         .call(d3.drag()
+        //             .on("start", dragstarted)
+        //             .on("drag", dragged)
+        //             .on("end", dragended));
 
-      simulation.force("link")
-          .links(graph.links);
+        // I want to attach text to each node, and display the text when the node is hovered over.
+        // have text tags with the id corresponding to the text of the node?
 
-      function ticked() {
-        link
-            .attr("x1", function(d) { return d.source.x; })
-            .attr("y1", function(d) { return d.source.y; })
-            .attr("x2", function(d) { return d.target.x; })
-            .attr("y2", function(d) { return d.target.y; });
+        node.append("title")
+                .text(function(d) { return d.id; });
 
-        node
-            .attr("cx", function(d) { return d.x; })
-            .attr("cy", function(d) { return d.y; });
-      }
+        //   var text = svg.select("g")
+        //       .attr("class","nodes")
+        //       .selectAll("circle")
+        
+
+        simulation
+            .nodes(graph.nodes)
+            .on("tick", ticked);
+
+        simulation.force("link")
+            .links(graph.links);
+
+        function ticked() {
+            link
+                .attr("x1", function(d) { return d.source.x; })
+                .attr("y1", function(d) { return d.source.y; })
+                .attr("x2", function(d) { return d.target.x; })
+                .attr("y2", function(d) { return d.target.y; });
+
+            node
+                .attr("cx", function(d) { return d.x; })
+                .attr("cy", function(d) { return d.y; });
+            nodeName
+                .attr("x", function(d) { return d.x; })
+                .attr("y", function(d) { return d.y; });
+        }
     });
 
     function dragstarted(d) {
