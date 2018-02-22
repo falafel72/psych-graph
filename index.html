@@ -30,9 +30,18 @@
 </style>
 <body>
     <svg width="1280" height="800"></svg>
+    <form id="switch">
+        <input type="checkbox" id="number-of-questions"> Studies labeled by number of questions answered <br>
+        <input type="checkbox" id="necessary-studies"> Studies that are absolutely necessary <br>
+    </form>
+    
 </body>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-zoom.v1.min.js"></script>
+<script
+    src="https://code.jquery.com/jquery-3.3.1.js"
+    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous"></script>
 <script>
     /* 
     TO DO:
@@ -40,7 +49,9 @@
         - Change text placement
         - Avoid text scaling when zooming but keep the translation
     */
-    
+    var showNumberOfQuestions = false; 
+    var showNecessaryStudies = false;
+
     var zoom = d3.zoom()
         .scaleExtent([1,10])
         .on("zoom",zoomed);
@@ -61,7 +72,17 @@
         .attr("transform", "translate(" + 0 + "," + 0 + ")");
 
     d3.json("data.json", function(error, graph) {
-      if (error) throw error;
+        if (error) throw error;
+
+        //need to make a function that returns the number of target questions for a study
+        function count(id) {
+            //find links[some index].source and count how many links have that as the source. 
+            var counter = 0;
+            for(var key in graph.links) {
+                if(graph.links[key]["source"]["id"] == id) counter += 1;
+            }
+            return counter;
+        }
 
         var link = view.append("g")
                 .attr("class", "links")
@@ -82,6 +103,7 @@
         var node = nodeGroup.append("circle")
             .attr("r", 8)
             .attr("fill", function(d) { return color(d.type); })
+            .attr("class",function(d) { return (d.type) ? "question" : "study"; })
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
@@ -89,7 +111,6 @@
 
         // the name of the node is a text tag
         var nodeName = nodeGroup.append("text")
-            .attr("class",function(d) { return (d.type) ? "question" : "study"; })
             .text(function(d) {return d.id});
 
         node.append("title")
@@ -117,6 +138,19 @@
                 .attr("x", function(d) { return d.x + 9; })
                 .attr("y", function(d) { return d.y + 4; });
         }
+        
+
+        function remove(id) {
+            
+        }
+        //set the mode to switch each time the check box options are changed (with jquery?)
+        $("input#number-of-questions").change(function(d) {
+            showNumberOfQuestions = !showNumberOfQuestions;
+            node.attr("fill",function(d) { 
+                if(showNumberOfQuestions && d.type == 0) return color(count(d.id));
+                else return color(d.type);
+            });
+        });
     });
 
     function dragstarted(d) {
@@ -139,5 +173,7 @@
     function zoomed() {
         view.attr("transform",d3.event.transform);
     }
+
+    
 </script>
 </html>
