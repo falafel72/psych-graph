@@ -1,48 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<style>
-    .links line {
-        stroke: #999;
-        stroke-opacity: 0.6;
-    }
-
-    .node circle {
-        stroke: #fff;
-        stroke-width: 1.5px;
-    }
-
-    .node text {
-        font-size: 12px;
-        font-family: "Avenir";
-    }
-
-    .node circle:hover + text {
-        display: block;
-    }
-
-    .node text {
-        display: none;
-    };
-</style>
-<body>
-    <svg width="1280" height="800"></svg>
-    <form id="switch">
-        <input type="checkbox" id="number-of-questions"> Studies labeled by number of questions answered <br>
-        <input type="checkbox" id="necessary-studies"> Studies that are absolutely necessary <br>
-    </form>
-    
-</body>
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<script src="https://d3js.org/d3-zoom.v1.min.js"></script>
-<script
-    src="https://code.jquery.com/jquery-3.3.1.js"
-    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-    crossorigin="anonymous"></script>
-<script>
+$(document).ready(function() {
     /* 
     TO DO:
         - Create a visualisation for the minimum number of possible studies
@@ -66,7 +22,7 @@
         .force("link", d3.forceLink().id(function(d) { return d.id; }))
         .force("charge", d3.forceManyBody().strength(-15))
         .force("center", d3.forceCenter(width / 2, height / 2));
-    
+
     var view = svg.append("g")
         .attr("class","view")
         .attr("transform", "translate(" + 0 + "," + 0 + ")");
@@ -173,7 +129,4 @@
     function zoomed() {
         view.attr("transform",d3.event.transform);
     }
-
-    
-</script>
-</html>
+});

@@ -1,0 +1,31 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.links line {
+  stroke: #999;
+  stroke-opacity: 0.6;
+}
+
+.node circle {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font-size: 12px;
+  font-family: "Avenir";
+}
+
+.node circle:hover + text {
+  display: block;
+}
+
+.node text {
+  display: none;
+};
