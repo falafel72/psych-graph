@@ -7,6 +7,7 @@ $(document).ready(function() {
     */
     var showNumberOfQuestions = false; 
     var showNecessaryStudies = false;
+    var showUnits = false;
 
     var zoom = d3.zoom()
         .scaleExtent([1,10])
@@ -16,7 +17,8 @@ $(document).ready(function() {
     width = +svg.attr("width"),
     height = +svg.attr("height");
 
-    var color = d3.scaleOrdinal(d3.schemeCategory20);
+    var typeColor = d3.scaleOrdinal(d3.schemeCategory20);
+    var countColor = d3.scaleOrdinal(d3.schemeSpectral[10]);
 
     var simulation = d3.forceSimulation()
         .force("link", d3.forceLink().id(function(d) { return d.id; }))
@@ -26,7 +28,26 @@ $(document).ready(function() {
     var view = svg.append("g")
         .attr("class","view")
         .attr("transform", "translate(" + 0 + "," + 0 + ")");
+    
+    var border = svg.append("rect")
+        .attr("x",0)
+        .attr("y",0)
+        .attr("width",width)
+        .attr("height",height)
+        .attr("class","border");
 
+    var legend = svg.append("g")
+        .attr("class","study-legend");
+
+    for(var i = 0; i < 10; i++) {
+        legend.append("rect")
+        .attr("x",20*i)
+        .attr("y",0)
+        .attr("width",20)
+        .attr("height",5)
+        .attr("fill",countColor(i));
+    }
+    
     d3.json("data.json", function(error, graph) {
         if (error) throw error;
 
@@ -58,7 +79,7 @@ $(document).ready(function() {
         // the node is the circle
         var node = nodeGroup.append("circle")
             .attr("r", 8)
-            .attr("fill", function(d) { return color(d.type); })
+            .attr("fill", function(d) { return typeColor(d.type); })
             .attr("class",function(d) { return (d.type) ? "question" : "study"; })
             .call(d3.drag()
                 .on("start", dragstarted)
@@ -99,12 +120,19 @@ $(document).ready(function() {
         function remove(id) {
             
         }
+
         //set the mode to switch each time the check box options are changed (with jquery?)
-        $("input#number-of-questions").change(function(d) {
-            showNumberOfQuestions = !showNumberOfQuestions;
+        $("input").change(function(d) {
+            if($(this).attr("id") == "number-of-questions") { 
+                showNumberOfQuestions = !showNumberOfQuestions;
+                $("g.study-legend").toggle();
+            }
+            if($(this).attr("id") == "necessary-studies") showNecessaryStudies = !showNecessaryStudies;
+            if($(this).attr("id") == "unit") showUnits = !showUnits;
+
             node.attr("fill",function(d) { 
-                if(showNumberOfQuestions && d.type == 0) return color(count(d.id));
-                else return color(d.type);
+                if(showNumberOfQuestions && d.type == 0) return countColor(count(d.id)-1);
+                else return typeColor(d.type);
             });
         });
     });
