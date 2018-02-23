@@ -29,13 +29,6 @@ $(document).ready(function() {
         .attr("class","view")
         .attr("transform", "translate(" + 0 + "," + 0 + ")");
     
-    var border = svg.append("rect")
-        .attr("x",0)
-        .attr("y",0)
-        .attr("width",width)
-        .attr("height",height)
-        .attr("class","border");
-
     var legend = svg.append("g")
         .attr("class","study-legend");
 
