@@ -23,7 +23,11 @@ rect.border {
   fill: none;
 }
 
-g.study-legend{
+g.study-legend {
+  display: none;
+}
+
+g.question-legend {
   display: none;
 }
 

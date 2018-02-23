@@ -4,6 +4,9 @@ $(document).ready(function() {
         - Create a visualisation for the minimum number of possible studies
         - Change text placement
         - Avoid text scaling when zooming but keep the translation
+        - Add a search bar to search for studies
+        - Add a reset button for pan/zoom
+        - Improve styling and layout
     */
     var showNumberOfQuestions = false; 
     var showNecessaryStudies = false;
@@ -17,7 +20,7 @@ $(document).ready(function() {
     width = +svg.attr("width"),
     height = +svg.attr("height");
 
-    var typeColor = d3.scaleOrdinal(d3.schemeCategory20);
+    var typeColor = d3.scaleOrdinal(d3.schemeSet1);
     var countColor = d3.scaleOrdinal(d3.schemeSpectral[10]);
 
     var simulation = d3.forceSimulation()
@@ -28,20 +31,42 @@ $(document).ready(function() {
     var view = svg.append("g")
         .attr("class","view")
         .attr("transform", "translate(" + 0 + "," + 0 + ")");
-    
-    var legend = svg.append("g")
+
+    var questionLegend = svg.append("g")
+        .attr("class","question-legend");
+
+    typeColor(0);
+    for(var i = 1; i <= 3; i++) {
+        questionLegend.append("rect")
+        .attr("x",20*(i-1))
+        .attr("y",30)
+        .attr("width",20)
+        .attr("height",10)
+        .attr("fill",typeColor(i));
+    }   
+
+    questionLegend.append("text")
+    .attr("x",65)
+    .attr("y",40)
+    .text("BLOA, CLOA, SCLOA")
+
+    var studyLegend = svg.append("g")
         .attr("class","study-legend");
 
     for(var i = 0; i < 10; i++) {
-        legend.append("rect")
+        studyLegend.append("rect")
         .attr("x",20*i)
-        .attr("y",0)
+        .attr("y",10)
         .attr("width",20)
-        .attr("height",5)
+        .attr("height",10)
         .attr("fill",countColor(i));
     }
-    
-    d3.json("data.json", function(error, graph) {
+    studyLegend.append("text")
+    .attr("x",205)
+    .attr("y",20)
+    .text("1-10");
+
+    d3.json("data2.json", function(error, graph) {
         if (error) throw error;
 
         //need to make a function that returns the number of target questions for a study
@@ -72,7 +97,7 @@ $(document).ready(function() {
         // the node is the circle
         var node = nodeGroup.append("circle")
             .attr("r", 8)
-            .attr("fill", function(d) { return typeColor(d.type); })
+            .attr("fill", function(d) { return typeColor((d.type > 0) ? 1 : 0); })
             .attr("class",function(d) { return (d.type) ? "question" : "study"; })
             .call(d3.drag()
                 .on("start", dragstarted)
@@ -121,11 +146,15 @@ $(document).ready(function() {
                 $("g.study-legend").toggle();
             }
             if($(this).attr("id") == "necessary-studies") showNecessaryStudies = !showNecessaryStudies;
-            if($(this).attr("id") == "unit") showUnits = !showUnits;
+            if($(this).attr("id") == "unit") {
+                showUnits = !showUnits;
+                $("g.question-legend").toggle();
+            }
 
             node.attr("fill",function(d) { 
                 if(showNumberOfQuestions && d.type == 0) return countColor(count(d.id)-1);
-                else return typeColor(d.type);
+                if(showUnits && d.type >= 1) return typeColor(d.type);
+                return typeColor((d.type > 0) ? 1 : 0);  
             });
         });
     });
