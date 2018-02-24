@@ -1,20 +1,29 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin: 0;
+}
+
+div.column {
+  padding: 10px;
+  float:left;
+}
+
+.left {
+  width: 20%;
+}
+
+.right {
+  width: 80%;
 }
 
 svg {
-  margin-left: auto;
-  margin-right: auto;
   display: block;
   border: 3px solid black;
-}
-
-form {
-  padding: 20px;
-}
-
-a {
-  color: #00B7FF;
+  width: 100%;
 }
 
 rect.border {

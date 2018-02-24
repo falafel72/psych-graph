@@ -1,13 +1,18 @@
 extends layout
 
 block content
-  svg(width=1280 height=800)
-  form(action="")
-    input(type="checkbox" id="number-of-questions") 
-    label(for="number-of-questions") Studies labeled by number of questions answered
-    br
-    input(type="checkbox" id="necessary-studies") 
-    label(for="necessary-studies") Studies that are absolutely necessary (WIP)
-    br
-    input(type="checkbox" id="unit")
-    label(for="unit") Questions by unit (WIP)
+  div(class="column left")
+    form(action="")
+      input(type="text" id="node-search")
+      br
+      input(type="checkbox" id="number-of-questions") 
+      label(for="number-of-questions") Studies labeled by number of questions answered
+      br
+      input(type="checkbox" id="necessary-studies") 
+      label(for="necessary-studies") Studies that are absolutely necessary (WIP)
+      br
+      input(type="checkbox" id="unit")
+      label(for="unit") Questions by unit (WIP)
+  div(class="column right")
+    svg(width=1280 height=800)
+  

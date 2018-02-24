@@ -66,7 +66,7 @@ $(document).ready(function() {
     .attr("y",20)
     .text("1-10");
 
-    d3.json("data2.json", function(error, graph) {
+    d3.json("data.json", function(error, graph) {
         if (error) throw error;
 
         //need to make a function that returns the number of target questions for a study
