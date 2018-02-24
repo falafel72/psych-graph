@@ -11,6 +11,8 @@ $(document).ready(function() {
     var showNumberOfQuestions = false; 
     var showNecessaryStudies = false;
     var showUnits = false;
+    
+    var searchString = "";
 
     var zoom = d3.zoom()
         .scaleExtent([1,10])
@@ -133,11 +135,15 @@ $(document).ready(function() {
                 .attr("x", function(d) { return d.x + 9; })
                 .attr("y", function(d) { return d.y + 4; });
         }
-        
 
-        function remove(id) {
-            
-        }
+        $("form").submit(function(e){
+            e.preventDefault();
+        });
+
+        $("input#node-search").on("input",function(){
+            searchString = this.value;
+            colorChange();
+        });
 
         //set the mode to switch each time the check box options are changed (with jquery?)
         $("input").change(function(d) {
@@ -151,12 +157,17 @@ $(document).ready(function() {
                 $("g.question-legend").toggle();
             }
 
+            colorChange();
+        });
+        function colorChange() {
             node.attr("fill",function(d) { 
+                //search for node and highlight appropriate question/study
+                if(searchString != "" && d.id.toLowerCase().includes(searchString)) return "#000000";
                 if(showNumberOfQuestions && d.type == 0) return countColor(count(d.id)-1);
                 if(showUnits && d.type >= 1) return typeColor(d.type);
                 return typeColor((d.type > 0) ? 1 : 0);  
             });
-        });
+        }
     });
 
     function dragstarted(d) {
