@@ -4,7 +4,6 @@ $(document).ready(function() {
         - Create a visualisation for the minimum number of possible studies
         - Change text placement
         - Avoid text scaling when zooming but keep the translation
-        - Add a search bar to search for studies
         - Add a reset button for pan/zoom
         - Improve styling and layout
     */
@@ -113,7 +112,6 @@ $(document).ready(function() {
         node.append("title")
                 .text(function(d) { return d.id; });
         
-
         simulation
             .nodes(graph.nodes)
             .on("tick", ticked);
@@ -138,6 +136,10 @@ $(document).ready(function() {
 
         $("form").submit(function(e){
             e.preventDefault();
+        });
+
+        $("button#reset").click(function(e) {
+            zoom.transform(svg, d3.zoomIdentity);
         });
 
         $("input#node-search").on("input",function(){
