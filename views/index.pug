@@ -3,16 +3,18 @@ extends layout
 block content
   div(class="column left")
     form(action="")
-      input(type="text" id="node-search")
+      input(type="text" id="node-search" placeholder="Search for...")
       br
       input(type="checkbox" id="number-of-questions") 
       label(for="number-of-questions") Studies labeled by number of questions answered
       br
       input(type="checkbox" id="necessary-studies") 
-      label(for="necessary-studies") Studies that are absolutely necessary (WIP)
+      label(for="necessary-studies") Necessary studies 
       br
       input(type="checkbox" id="unit")
-      label(for="unit") Questions by unit (WIP)
+      label(for="unit") Questions by unit 
+      br
+      button(id="reset") Reset zoom
   div(class="column right")
     svg(width=1280 height=800)
   
