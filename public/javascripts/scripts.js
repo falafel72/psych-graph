@@ -7,6 +7,9 @@ $(document).ready(function() {
         - Add a reset button for pan/zoom
         - Improve styling and layout
     */
+
+    var necessaryStudies = ["Milner 1957", "Kasamatsu & Hirai 1999", "Martinez & Kezner 1997", "Meaney et al. 1988", "Ashtari et al. 2009", "Corkin 1997", "Bouchard et al. 1990", "Matsuzawa 2007", "Curtis et al. 2004", "Caspi et al. 2003", "Scarr & Weinberg 1976", "Bartlett 1932", "Loftus & Palmer 1974", "Anderson & Pichert 1978", "Baddeley et al. 1975", "Sacks 2007", "Cole & Scribner 1974", "Schachter & Singer 1962", "LeDoux 1998", "Brown & Kulik 1977", "Ross et al. 1977", "Tajfel 1970", "Gilbert 1951", "Karlins et al. 1969", "Bandura & Ross 1961", "Dickerson et al. 1992", "Asch 1956", "Sherif 1936", "Berry 1967", "Abrams et al. 1990", "Ayoun & Moreo 2008"];
+
     var showNumberOfQuestions = false; 
     var showNecessaryStudies = false;
     var showUnits = false;
@@ -66,6 +69,7 @@ $(document).ready(function() {
     .attr("x",205)
     .attr("y",20)
     .text("1-10");
+
 
     d3.json("data.json", function(error, graph) {
         if (error) throw error;
@@ -164,6 +168,7 @@ $(document).ready(function() {
         function colorChange() {
             node.attr("fill",function(d) { 
                 //search for node and highlight appropriate question/study
+                if(showNecessaryStudies && d.type == 0 && necessaryStudies.indexOf(d.id) == -1) return "#808080";
                 if(searchString != "" && d.id.toLowerCase().includes(searchString)) return "#000000";
                 if(showNumberOfQuestions && d.type == 0) return countColor(count(d.id)-1);
                 if(showUnits && d.type >= 1) return typeColor(d.type);
