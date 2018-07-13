@@ -8,7 +8,7 @@ $(document).ready(function() {
         - Improve styling and layout
     */
 
-    var necessaryStudies = ["Milner 1957", "Kasamatsu & Hirai 1999", "Martinez & Kezner 1997", "Meaney et al. 1988", "Ashtari et al. 2009", "Corkin 1997", "Bouchard et al. 1990", "Matsuzawa 2007", "Curtis et al. 2004", "Caspi et al. 2003", "Scarr & Weinberg 1976", "Bartlett 1932", "Loftus & Palmer 1974", "Anderson & Pichert 1978", "Baddeley et al. 1975", "Sacks 2007", "Cole & Scribner 1974", "Schachter & Singer 1962", "LeDoux 1998", "Brown & Kulik 1977", "Ross et al. 1977", "Tajfel 1970", "Gilbert 1951", "Karlins et al. 1969", "Bandura & Ross 1961", "Dickerson et al. 1992", "Asch 1956", "Sherif 1936", "Berry 1967", "Abrams et al. 1990", "Ayoun & Moreo 2008"];
+    var necessaryStudies = ["Milner 1957", "Kasamatsu & Hirai 1999", "Martinez & Kezner 1997", "Meaney et al. 1988", "Ashtari et al. 2009", "Corkin 1997", "Bouchard et al. 1990", "Matsuzawa 2007", "Curtis et al. 2004", "Caspi et al. 2003", "Scarr & Weinberg 1976", "Bartlett 1932", "Loftus & Palmer 1974", "Anderson & Pichert 1978", "Baddeley et al. 1975", "Sacks 2007", "Cole & Scribner 1974", "Schachter & Singer 1962", "LeDoux 1998", "Brown & Kulik 1977", "Ross et al. 1977", "Tajfel 1970", "Gilbert 1951", "Karlins et al. 1969", "Bandura & Ross 1961", "Dickerson et al. 1992", "Asch 1956", "Sherif 1936", "Berry 1967", "Abrams et al. 1990", "Ayoun & Moreo 2008", "Zimbardo et al. 1973"];
 
     var showNumberOfQuestions = false; 
     var showNecessaryStudies = false;
